@@ -16,12 +16,8 @@ When the above configuration option is unset or set to `internal`,
 aerc uses an internal OpenPGP implementation.
 
 > At the moment internal PGP support is still in it's early stages and will
-> likely change as time goes on. Tickets relating to this can be found in
-> ~sircmpwn's tracker: [#353](https://todo.sr.ht/~sircmpwn/aerc2/353)
-> [#354](https://todo.sr.ht/~sircmpwn/aerc2/354)
-> [#355](https://todo.sr.ht/~sircmpwn/aerc2/355)
-> [#357](https://todo.sr.ht/~sircmpwn/aerc2/357)
-> [and more](https://todo.sr.ht/~sircmpwn/aerc2?search=label%3A%22pgp%22)
+> likely change as time goes on. Tickets relating to this can be found in the
+> [ticket tracker](https://todo.sr.ht/~rjarry/aerc?search=label%3A%22pgp%22).
 
 **Please be aware:** at the moment internal PGP support requires you to export
 your private keys. Please ensure that your home directory is protected against
