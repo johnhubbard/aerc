@@ -598,6 +598,20 @@ These options are configured in the *[ui]* section of _aerc.conf_.
 
 	Default: _false_
 
+*client-threads-prefetch* = _true_|_false_
+	Fetch headers for every message in a folder when it is opened, rather
+	than only for the messages in view. Client side threads are built from
+	the headers that have arrived, and a message whose headers are missing
+	is threaded as its own root, so a thread stays split until every
+	message in it has been fetched.
+
+	This costs one header fetch across the whole folder on first open. Pair
+	it with *cache-headers* in *aerc-accounts*(5) so that later opens are
+	served from the cache. It has no effect unless client side threading is
+	in use.
+
+	Default: _false_
+
 *client-threads-delay* = _<duration>_
 	Delay of inactivity after which the client threads are rebuilt. Setting
 	this to _0s_ may introduce a noticeable lag when scrolling through the

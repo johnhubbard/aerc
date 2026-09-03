@@ -47,6 +47,7 @@ type UIConfig struct {
 	ForceClientThreads            bool          `ini:"force-client-threads"`
 	ThreadingBySubject            bool          `ini:"threading-by-subject"`
 	ClientThreadsDelay            time.Duration `ini:"client-threads-delay" default:"50ms"`
+	ClientThreadsPrefetch         bool          `ini:"client-threads-prefetch"`
 	ThreadContext                 bool          `ini:"show-thread-context"`
 	FuzzyComplete                 bool          `ini:"fuzzy-complete"`
 	NewMessageBell                bool          `ini:"new-message-bell" default:"true"`

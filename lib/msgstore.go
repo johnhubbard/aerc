@@ -289,6 +289,11 @@ func (store *MessageStore) Update(msg types.WorkerMessage) {
 		if msg.Directory != store.Name {
 			break
 		}
+		// Threads are built from the References of the messages whose headers
+		// have arrived, and a message with no headers threads as its own root.
+		// Complete threads therefore require headers for the whole folder.
+		prefetch := store.threadedView && store.buildThreads &&
+			store.ui().ClientThreadsPrefetch
 		nUids := len(msg.Uids)
 		newMap := make(map[models.UID]*models.MessageInfo, nUids)
 		for i, uid := range msg.Uids {
@@ -298,7 +303,7 @@ func (store *MessageStore) Update(msg types.WorkerMessage) {
 				newMap[uid] = nil
 				directoryChange = true
 				pos := actualPositionInList(i, nUids, reverseOrder)
-				if pos >= start && pos < end {
+				if prefetch || (pos >= start && pos < end) {
 					newUids = append(newUids, uid)
 				}
 			}
