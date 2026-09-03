@@ -246,7 +246,17 @@ func addMessage(
 	templateData, ok := data.(models.TemplateData)
 	if ok {
 		if templateData.ThreadFolded() {
-			params.styles = append(params.styles, config.STYLE_MSGLIST_THREAD_FOLDED)
+			// A fold hides its children, so a flagged message inside one
+			// leaves no trace on the row that represents it. thread_folded is
+			// applied after flagged and masks it, so where the thread holds a
+			// flagged message anywhere, keep the flagged style for the whole
+			// thread and let the fold count in the subject mark the fold.
+			thread, err := store.Thread(uid)
+			if err == nil && flaggedInThread(thread, store) > 0 {
+				params.styles = append(params.styles, config.STYLE_MSGLIST_FLAGGED)
+			} else {
+				params.styles = append(params.styles, config.STYLE_MSGLIST_THREAD_FOLDED)
+			}
 		}
 		if templateData.ThreadContext() {
 			params.styles = append(params.styles, config.STYLE_MSGLIST_THREAD_CONTEXT)
@@ -459,6 +469,20 @@ func unreadInThread(thread *types.Thread, store *lib.MessageStore) (ctr int) {
 	_ = thread.Walk(func(t *types.Thread, _ int, _ error) error {
 		msg := store.Messages[t.Uid]
 		if msg != nil && !msg.Flags.Has(models.SeenFlag) {
+			ctr++
+		}
+		return nil
+	})
+	return
+}
+
+func flaggedInThread(thread *types.Thread, store *lib.MessageStore) (ctr int) {
+	if thread == nil {
+		return
+	}
+	_ = thread.Walk(func(t *types.Thread, _ int, _ error) error {
+		msg := store.Messages[t.Uid]
+		if msg != nil && msg.Flags.Has(models.FlaggedFlag) {
 			ctr++
 		}
 		return nil
