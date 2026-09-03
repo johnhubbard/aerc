@@ -111,6 +111,7 @@ func (imapw *IMAPWorker) handleAnsweredMessages(msg *types.AnsweredMessages) err
 					Directory: msg.Directory,
 					Uid:       imapw.Uint32ToUid(_msg.Uid),
 				},
+				ReplaceFlags: true,
 			}, nil)
 			return nil
 		})
