@@ -314,6 +314,12 @@ func (w *IMAPWorker) handleImapUpdate(update client.Update) {
 			w.seqMap.Put(msg.Uid)
 		}
 		systemFlags, keywordFlags := translateImapFlags(msg.Flags)
+		// An unsolicited FETCH carries only the items that changed, so
+		// replace the stored flags only when this one carried FLAGS. The
+		// flags it carries are the message's whole set, and merging them
+		// could only add to what is stored, which left a flag cleared in
+		// another client still set here.
+		_, carriesFlags := msg.Items[imap.FetchFlags]
 		w.worker.PostMessage(&types.MessageInfo{
 			Info: &models.MessageInfo{
 				BodyStructure: translateBodyStructure(msg.BodyStructure),
@@ -324,6 +330,7 @@ func (w *IMAPWorker) handleImapUpdate(update client.Update) {
 				InternalDate:  msg.InternalDate,
 				Uid:           w.Uint32ToUid(msg.Uid),
 			},
+			ReplaceFlags: carriesFlags,
 		}, nil)
 	case *client.ExpungeUpdate:
 		// We're notified of a message deletion. There are two cases:
