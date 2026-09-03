@@ -309,9 +309,14 @@ func (imapw *IMAPWorker) handleFetchMessageFlags(msg *types.FetchMessageFlags) e
 				info.Labels = keywordFlags
 			}
 
+			// A FLAGS query answers for the requested UIDs in full, so the
+			// result replaces what the store holds. Merging can only add
+			// flags, and the header cache reports every cached message as
+			// seen, so merging leaves cached unread mail marked read.
 			imapw.worker.PostMessage(&types.MessageInfo{
-				Message: types.RespondTo(msg),
-				Info:    info,
+				Message:      types.RespondTo(msg),
+				Info:         info,
+				ReplaceFlags: true,
 			}, nil)
 			return nil
 		})
