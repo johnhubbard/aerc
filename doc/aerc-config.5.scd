@@ -261,6 +261,15 @@ These options are configured in the *[ui]* section of _aerc.conf_.
 
 	Default: _false_
 
+*mouse-wheel-lines* = _<int>_
+	Number of messages the selection moves for one mouse wheel notch in the
+	message list. Values below _1_ are treated as _1_.
+
+	This does not apply to the message viewer, which scrolls inside the
+	pager and follows the pager's own configuration.
+
+	Default: _1_
+
 *new-message-bell* = _true_|_false_
 	Ring the bell when a new message is received.
 

@@ -326,16 +326,26 @@ func (ml *MessageList) MouseEvent(localX int, localY int, event vaxis.Event) {
 			}
 		case vaxis.MouseWheelDown:
 			if ml.store != nil {
-				ml.store.Next()
+				ml.store.NextPrev(ml.wheelLines())
 			}
 			ml.Invalidate()
 		case vaxis.MouseWheelUp:
 			if ml.store != nil {
-				ml.store.Prev()
+				ml.store.NextPrev(-ml.wheelLines())
 			}
 			ml.Invalidate()
 		}
 	}
+}
+
+// wheelLines is the selection step for one mouse wheel notch. A value below 1
+// would invert or freeze the wheel, so it is clamped.
+func (ml *MessageList) wheelLines() int {
+	n := SelectedAccountUiConfig().MouseWheelLines
+	if n < 1 {
+		return 1
+	}
+	return n
 }
 
 func (ml *MessageList) Clicked(x, y int) (int, bool) {

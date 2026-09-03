@@ -43,6 +43,7 @@ type UIConfig struct {
 	EmptyDirlist                  string        `ini:"empty-dirlist" default:"(no folders)"`
 	EmptySubject                  string        `ini:"empty-subject" default:"(no subject)"`
 	MouseEnabled                  bool          `ini:"mouse-enabled"`
+	MouseWheelLines               int           `ini:"mouse-wheel-lines" default:"1"`
 	ThreadingEnabled              bool          `ini:"threading-enabled"`
 	ForceClientThreads            bool          `ini:"force-client-threads"`
 	ThreadingBySubject            bool          `ini:"threading-by-subject"`
